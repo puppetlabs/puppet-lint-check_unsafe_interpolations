@@ -22,5 +22,5 @@ Gem::Specification.new do |spec|
   spec.license       = 'Apache-2.0'
   spec.required_ruby_version = Gem::Requirement.new(">= 2.7".freeze)
 
-  spec.add_dependency 'puppet-lint', '~> 2.0'
+  spec.add_dependency 'puppet-lint', '>= 2', '< 4'
 end
