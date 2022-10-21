@@ -29,7 +29,7 @@ end
 
 group :rubocop do
   gem 'rubocop', '~> 1.6.1', require: false
-  gem 'rubocop-performance', '~> 1.9.1', require: false
+  gem 'rubocop-performance', '~> 1.10.2', require: false
   gem 'rubocop-rspec', '~> 2.0.1', require: false
 end
 
