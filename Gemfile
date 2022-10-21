@@ -14,7 +14,7 @@ group :development do
   gem 'rspec', '~> 3.1'
   gem 'rspec-collection_matchers', '~> 1.0'
   gem 'rspec-its', '~> 1.0'
-  gem 'rspec-json_expectations', '~> 1.4'
+  gem 'rspec-json_expectations', '~> 2.2'
 end
 
 group :release do
