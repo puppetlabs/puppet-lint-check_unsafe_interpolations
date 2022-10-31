@@ -10,7 +10,7 @@ group :development do
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
 
-  gem 'rake', '~> 10.0'
+  gem 'rake', '~> 13.0'
   gem 'rspec', '~> 3.1'
   gem 'rspec-collection_matchers', '~> 1.0'
   gem 'rspec-its', '~> 1.0'
