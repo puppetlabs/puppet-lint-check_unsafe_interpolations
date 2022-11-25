@@ -19,16 +19,20 @@ PuppetLint.new_check(:check_unsafe_interpolations) do
 
     # Iterate over each command found in any exec
     exec_resources.each do |command_resources|
-      # Iterate over each command in execs and check for unsafe interpolations
-      command_resources[:tokens].each do |token|
-        # We are only interested in tokens from command onwards
-        next unless token.type == :NAME
-        # Don't check the command if it is parameterised
-        next if parameterised?(token)
+      check_unsafe_interpolations(command_resources)
+    end
+  end
 
-        check_command(token).each do |t|
-          notify_warning(t)
-        end
+  # Iterates over tokens in a command and raises a warning if an interpolated variable is found
+  def check_unsafe_interpolations(command_resources)
+    command_resources[:tokens].each do |token|
+      # We are only interested in tokens from command onwards
+      next unless token.type == :NAME
+      # Don't check the command if it is parameterised
+      next if parameterised?(token)
+
+      check_command(token).each do |t|
+        notify_warning(t)
       end
     end
   end
