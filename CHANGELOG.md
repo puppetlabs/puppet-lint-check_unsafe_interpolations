@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v0.3.0](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/tree/v0.3.0) - 2023-03-13
+
+[Full Changelog](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/compare/v0.0.4...v0.3.0)
+
+### Fixed
+
+- (CONT-551) Fix get_exec_titles bug [#36](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/pull/36) ([GSPatton](https://github.com/GSPatton))
+
 ## [v0.0.4](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/tree/v0.0.4) - 2022-12-12
 
 [Full Changelog](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/compare/v0.0.3...v0.0.4)
