@@ -1,4 +1,4 @@
 # version of this gem
 class CheckUnsafeInterpolations
-  VERSION ||= '0.0.4'.freeze
+  VERSION ||= '0.0.5'.freeze
 end
