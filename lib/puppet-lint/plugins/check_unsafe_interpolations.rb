@@ -33,7 +33,7 @@ PuppetLint.new_check(:check_unsafe_interpolations) do
   def check_unsafe_interpolations(command_resources)
     command_resources[:tokens].each do |token|
       # Skip iteration if token isn't a command of type :NAME
-      next unless COMMANDS.include?(token.value) && token.type == :NAME
+      next unless COMMANDS.include?(token.value) && (token.type == :NAME || token.type == :UNLESS)
       # Don't check the command if it is parameterised
       next if parameterised?(token)
 
