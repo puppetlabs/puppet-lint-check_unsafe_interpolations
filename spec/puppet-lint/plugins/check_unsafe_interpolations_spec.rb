@@ -33,6 +33,8 @@ describe 'check_unsafe_interpolations' do
 
           exec { 'bar':
             command => "echo ${foo} ${bar}",
+            onlyif  => "${baz}",
+            unless  => "${bazz}",
           }
 
         }
@@ -40,12 +42,14 @@ describe 'check_unsafe_interpolations' do
       end
 
       it 'detects multiple unsafe exec command arguments' do
-        expect(problems).to have(2).problems
+        expect(problems).to have(4).problems
       end
 
       it 'creates two warnings' do
         expect(problems).to contain_warning(msg)
         expect(problems).to contain_warning("unsafe interpolation of variable 'bar' in exec command")
+        expect(problems).to contain_warning("unsafe interpolation of variable 'baz' in exec command")
+        expect(problems).to contain_warning("unsafe interpolation of variable 'bazz' in exec command")
       end
     end
 
