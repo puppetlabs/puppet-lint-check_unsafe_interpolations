@@ -45,7 +45,7 @@ describe 'check_unsafe_interpolations' do
 
       it 'creates two warnings' do
         expect(problems).to contain_warning(msg)
-        expect(problems).to contain_warning(msg)
+        expect(problems).to contain_warning("unsafe interpolation of variable 'bar' in exec command")
       end
     end
 
