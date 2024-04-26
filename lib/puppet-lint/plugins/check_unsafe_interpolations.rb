@@ -22,10 +22,10 @@ PuppetLint.new_check(:check_unsafe_interpolations) do
     end
   end
 
-  # Iterate over the tokens in a title and raise a warning if an interpolated variable is found
+  # Iterate over the tokens in a title and raise a warning if an unsafe interpolated variable is found
   def check_unsafe_title(title)
     title.each do |token|
-      notify_warning(token.next_code_token) if interpolated?(token)
+      notify_warning(token.next_code_token) if unsafe_interpolated?(token)
     end
   end
 
@@ -33,7 +33,7 @@ PuppetLint.new_check(:check_unsafe_interpolations) do
   def check_unsafe_interpolations(command_resources)
     command_resources[:tokens].each do |token|
       # Skip iteration if token isn't a command of type :NAME
-      next unless COMMANDS.include?(token.value) && token.type == :NAME
+      next unless COMMANDS.include?(token.value) && (token.type == :NAME || token.type == :UNLESS)
       # Don't check the command if it is parameterised
       next if parameterised?(token)
 
@@ -60,7 +60,7 @@ PuppetLint.new_check(:check_unsafe_interpolations) do
     # Iterate through tokens in command
     while current_token.type != :NEWLINE
       # Check if token is a varibale and if it is parameterised
-      rule_violations.append(current_token.next_code_token) if interpolated?(current_token)
+      rule_violations.append(current_token.next_code_token) if unsafe_interpolated?(current_token)
       current_token = current_token.next_token
     end
 
@@ -78,7 +78,7 @@ PuppetLint.new_check(:check_unsafe_interpolations) do
   end
 
   # This function is a replacement for puppet_lint's title_tokens function which assumes titles have single quotes
-  # This function adds a check for titles in double quotes where there could be interpolated variables
+  # This function adds a check for titles in double quotes where there could be unsafe interpolated variables
   def get_exec_titles
     result = []
     tokens.each_index do |token_idx|
@@ -114,8 +114,52 @@ PuppetLint.new_check(:check_unsafe_interpolations) do
     result
   end
 
-  def interpolated?(token)
-    INTERPOLATED_STRINGS.include?(token.type)
+  def find_closing_brack(token)
+    while (token = token.next_code_token)
+      case token.type
+      when :RBRACK
+        return token
+      when :LBRACK
+        token = find_closing_brack(token)
+      end
+    end
+    raise 'not reached'
+  end
+
+  def find_closing_paren(token)
+    while (token = token.next_code_token)
+      case token.type
+      when :RPAREN
+        return token
+      when :LPAREN
+        token = find_closing_paren(token)
+      end
+    end
+    raise 'not reached'
+  end
+
+  def unsafe_interpolated?(token)
+    # XXX: Since stdlib 9.0.0 'shell_escape' is deprecated in favor or 'stdlib::shell_escape'
+    # When the shell_escape function is removed from stdlib, we want to remove it bellow.
+    return false unless INTERPOLATED_STRINGS.include?(token.type)
+
+    token = token.next_code_token
+
+    if token.type == :FUNCTION_NAME && ['shell_escape', 'stdlib::shell_escape'].include?(token.value)
+      token = token.next_code_token
+      token = find_closing_paren(token).next_code_token if token.type == :LPAREN
+      return ![:DQPOST, :DQMID].include?(token.type)
+    elsif token.type == :VARIABLE
+      token = token.next_code_token
+      token = find_closing_brack(token).next_code_token if token.type == :LBRACK
+      if token.type == :DOT && [:NAME, :FUNCTION_NAME].include?(token.next_code_token.type) && ['shell_escape', 'stdlib::shell_escape'].include?(token.next_code_token.value)
+        token = token.next_code_token.next_code_token
+        token = find_closing_paren(token).next_code_token if token.type == :LPAREN
+        return ![:DQPOST, :DQMID].include?(token.type)
+      end
+    end
+
+    true
   end
 
   # Finds the index offset of the next instance of `value` in `tokens_slice` from the original index

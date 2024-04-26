@@ -33,6 +33,8 @@ describe 'check_unsafe_interpolations' do
 
           exec { 'bar':
             command => "echo ${foo} ${bar}",
+            onlyif  => "${baz}",
+            unless  => "${bazz}",
           }
 
         }
@@ -40,12 +42,14 @@ describe 'check_unsafe_interpolations' do
       end
 
       it 'detects multiple unsafe exec command arguments' do
-        expect(problems).to have(2).problems
+        expect(problems).to have(4).problems
       end
 
       it 'creates two warnings' do
         expect(problems).to contain_warning(msg)
-        expect(problems).to contain_warning(msg)
+        expect(problems).to contain_warning("unsafe interpolation of variable 'bar' in exec command")
+        expect(problems).to contain_warning("unsafe interpolation of variable 'baz' in exec command")
+        expect(problems).to contain_warning("unsafe interpolation of variable 'bazz' in exec command")
       end
     end
 
@@ -84,6 +88,44 @@ describe 'check_unsafe_interpolations' do
 
       it 'detects zero problems' do
         expect(problems).to have(0).problems
+      end
+    end
+
+    context 'exec with shell escaped string in command' do
+      let(:code) do
+        <<-PUPPET
+        class foo {
+
+          exec { 'bar':
+            command => "echo ${foo.stdlib::shell_escape} ${bar.stdlib::shell_escape()}",
+            onlyif  => "${bar[1].stdlib::shell_escape}",
+            unless  => "[ -x ${stdlib::shell_escape(reticulate($baz))} ]",
+          }
+        }
+        PUPPET
+      end
+
+      it 'detects zero problems' do
+        expect(problems).to have(0).problems
+      end
+    end
+
+    context 'exec with post-processed shell escaped string in command' do
+      let(:code) do
+        <<-PUPPET
+        class foo {
+
+          exec { 'bar':
+            command => "echo ${reticulate(foo.stdlib::shell_escape)} ${bar.stdlib::shell_escape().reticulate}",
+            onlyif  => "${bar[1].stdlib::shell_escape.reticulate()}",
+            unless  => "[ -x ${reticulate(stdlib::shell_escape($baz))} ]",
+          }
+        }
+        PUPPET
+      end
+
+      it 'detects zero problems' do
+        expect(problems).to have(4).problems
       end
     end
 
