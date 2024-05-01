@@ -1,9 +1,13 @@
 name: "ci"
 
 on:
-  pull_request:
+  push:
     branches:
       - "main"
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
   workflow_dispatch:
 
 jobs:
