@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v0.0.5](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/tree/v0.0.5) - 2024-05-15
+
+[Full Changelog](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/compare/v0.0.4...v0.0.5)
+
+### Fixed
+
+- Fix safe interpolation detection [#48](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/pull/48) ([smortex](https://github.com/smortex))
+- Fix detection of insecure interpolations in `unless` parameter [#47](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/pull/47) ([smortex](https://github.com/smortex))
+- Fix running the test suite [#46](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/pull/46) ([smortex](https://github.com/smortex))
+- (CAT-1301) Update puppet-lint dependency to match vox [#43](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/pull/43) ([GSPatton](https://github.com/GSPatton))
+- (CONT-551) Fix get_exec_titles bug [#36](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/pull/36) ([GSPatton](https://github.com/GSPatton))
+
 ## [v0.0.4](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/tree/v0.0.4) - 2022-12-12
 
 [Full Changelog](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/compare/v0.0.3...v0.0.4)
@@ -27,6 +39,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 [Full Changelog](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/compare/v0.0.1...v0.0.2)
 
 ### Changed
+
 - (CONT-332) Change puppet-lint version dependency [#24](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/pull/24) ([GSPatton](https://github.com/GSPatton))
 
 ## [v0.0.1](https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations/tree/v0.0.1) - 2022-12-01
