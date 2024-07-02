@@ -10,7 +10,10 @@ This repository contains a custom check for puppet-lint, used to identify unsafe
 
 ## Warning
 
-This plugin is designed to flag potentially unsafe interpolations within `exec` resource blocks in Puppet manifests. However, in its current state, when it identifies a problem, it may inadvertently cause your CI/CD pipelines to fail. This behavior was not intentional and is a key reason why this check is not currently enforced by default. If you use this plugin, it is recommended to review and address flagged issues promptly. Use this plugin under your own risk!
+This plugin is designed to flag potentially unsafe interpolations within `exec` resource blocks in Puppet manifests. However, in its current state, when it identifies a problem, it may inadvertently cause your CI/CD pipelines to fail. If you use this plugin, it is recommended to review and address flagged issues promptly. Use this plugin under your own risk!
+
+It is also possible to prevent pipeline failures by explicitly disabling `PuppetLint.configuration.fail_on_warnings` in your Lint configuration file. However, keep in mind that this will disable failures
+for all Lint checks and could potentially result in Lint issues being overlooked in the long run.
 
 ## Usage
 
