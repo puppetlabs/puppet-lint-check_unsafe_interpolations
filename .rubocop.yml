@@ -4,7 +4,7 @@ require:
 - rubocop-rspec
 AllCops:
   DisplayCopNames: true
-  TargetRubyVersion: '2.7'
+  TargetRubyVersion: '3.1'
   SuggestExtensions: false
   Include:
   - "**/*.rb"
