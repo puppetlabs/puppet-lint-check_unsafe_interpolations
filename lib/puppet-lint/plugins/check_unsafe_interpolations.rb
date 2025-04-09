@@ -1,7 +1,7 @@
 PuppetLint.new_check(:check_unsafe_interpolations) do
-  COMMANDS = Array['command', 'onlyif', 'unless']
-  INTERPOLATED_STRINGS = Array[:DQPRE, :DQMID]
-  USELESS_CHARS = Array[:WHITESPACE, :COMMA]
+  COMMANDS = ['command', 'onlyif', 'unless']
+  INTERPOLATED_STRINGS = [:DQPRE, :DQMID]
+  USELESS_CHARS = [:WHITESPACE, :COMMA]
   def check
     # Gather any exec commands' resources into an array
     exec_resources = resource_indexes.map { |resource|
@@ -33,7 +33,7 @@ PuppetLint.new_check(:check_unsafe_interpolations) do
   def check_unsafe_interpolations(command_resources)
     command_resources[:tokens].each do |token|
       # Skip iteration if token isn't a command of type :NAME
-      next unless COMMANDS.include?(token.value) && (token.type == :NAME || token.type == :UNLESS)
+      next unless COMMANDS.include?(token.value) && [:NAME, :UNLESS].include?(token.type)
       # Don't check the command if it is parameterised
       next if parameterised?(token)
 
