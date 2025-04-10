@@ -1,12 +1,12 @@
 PuppetLint.new_check(:check_unsafe_interpolations) do
-  COMMANDS = ['command', 'onlyif', 'unless']
-  INTERPOLATED_STRINGS = [:DQPRE, :DQMID]
-  USELESS_CHARS = [:WHITESPACE, :COMMA]
+  COMMANDS = ['command', 'onlyif', 'unless'].freeze
+  INTERPOLATED_STRINGS = [:DQPRE, :DQMID].freeze
+  USELESS_CHARS = [:WHITESPACE, :COMMA].freeze
   def check
     # Gather any exec commands' resources into an array
     exec_resources = resource_indexes.map { |resource|
       resource_parameters = resource[:param_tokens].map(&:value)
-      resource if resource[:type].value == 'exec' && !(COMMANDS & resource_parameters).empty?
+      resource if resource[:type].value == 'exec' && !COMMANDS.intersect?(resource_parameters).nil?
     }.compact
 
     # Iterate over title tokens and raise a warning if any are variables
@@ -106,7 +106,7 @@ PuppetLint.new_check(:check_unsafe_interpolations) do
         result << tokens[title_start_idx..title_end_idx]
       # Title is in single quotes
       else
-        tokens_array.concat([tokens[token_idx].next_code_token.next_code_token])
+        tokens_array.push(tokens[token_idx].next_code_token.next_code_token)
 
         result << tokens_array
       end
