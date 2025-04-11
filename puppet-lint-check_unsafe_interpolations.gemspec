@@ -5,7 +5,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'puppet-lint/plugins/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "puppet-lint-check_unsafe_interpolations"
+  spec.name          = 'puppet-lint-check_unsafe_interpolations'
   spec.version       = CheckUnsafeInterpolations::VERSION
   spec.authors       = ['Puppet, Inc.']
   spec.files         = Dir[
@@ -20,7 +20,8 @@ Gem::Specification.new do |spec|
   EOF
   spec.homepage      = 'https://github.com/puppetlabs/puppet-lint-check_unsafe_interpolations'
   spec.license       = 'Apache-2.0'
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.5".freeze)
+  spec.required_ruby_version = Gem::Requirement.new('>= 3.1')
 
   spec.add_dependency 'puppet-lint', '~> 4.0'
+  spec.metadata['rubygems_mfa_required'] = 'true'
 end
